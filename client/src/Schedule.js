@@ -117,7 +117,7 @@ function Schedule() {
     alert("Please give a valid time")
    }}
    else{
-    alert("Asll fields must be Filled")
+    alert("All fields must be Filled")
    }
   };
   const deleteAvailablity = (availablity) => {

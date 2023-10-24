@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Availability() {
   const [scheduledAvailablities, setScheduledAvailablities] = useState([]);
   const [newAvailablity, setNewAvailablity] = useState({ start: '', end: '',id:'' });
+  const [reservations, setReservations] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const navigate = useNavigate();
   const today = new Date();
@@ -27,6 +28,29 @@ const logout=()=>{
   localStorage.removeItem("token")
   navigate("/");
 }
+const getreservation =()=>{
+    
+  const date=`${startDate.getDate()}/${startDate.getMonth()+1}/${startDate.getFullYear()}`
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({  date: date  })
+};
+  fetch("http://localhost:5000/calender/getreservation",requestOptions)
+  .then(res=>res.json())
+  .then(data=>
+    {if(data && data.schedule){
+      setReservations(data.schedule)
+    }else{
+      setReservations([])
+
+    }
+    })
+  .catch(err=>console.log(err))
+}
+
+
+
 const aicheck=()=>{
   const date=`${startDate.getFullYear()}-${startDate.getMonth()+1}-${startDate.getDate()}`
   console.log(date)
@@ -70,6 +94,7 @@ const deleteav=()=>{
     .then(data=>
       {if(data && data.schedule){
         setScheduledAvailablities(data.schedule)
+        getreservation()
       }
     else{
       setScheduledAvailablities([])
@@ -196,10 +221,54 @@ showTimeInput={false}
               ))}
             </tbody>
           </table>
+
+
           </div>
+
+          
         )}
         <Button onClick={updateav} variant="contained">Publish Availability</Button>   
          <Button onClick={deleteav} variant="contained" color="error">Delete Availability</Button>
+      </div>
+
+
+      <div>
+
+      {reservations.length === 0 ? (
+          <p>No meeting reserved on this date.</p>
+        ) :  
+        
+          <div>
+            <h2>List of meetings You have</h2>
+      <table>
+            <thead>
+              <tr>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Email</th>
+                <th>Title</th>
+        
+              </tr>
+            </thead>
+            <tbody>
+              
+              {reservations.slice()
+  .sort((a, b) => a.start.localeCompare(b.start)).map((availablity, index) => (
+                
+                  <tr key={index}>
+                  <td>{availablity.start}</td>
+                  <td>{availablity.end}</td>
+                  <td>{availablity.email}</td>
+                  <td>{availablity.title}</td>
+           
+                </tr>
+                 
+              ))}
+            </tbody>
+          </table> 
+          </div>
+        
+}
       </div>
     </div>
   );
