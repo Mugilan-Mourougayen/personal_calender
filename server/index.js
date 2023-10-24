@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const port = 5000
+const uri = process.env.MONGO_DB_URL;
 const cors = require('cors');
 const mongoose = require("mongoose")
 const bodyParser = require('body-parser');
@@ -16,6 +18,6 @@ app.use("/calender", calenderRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-  mongoose.connect('mongodb+srv://mugilan18:root@cluster0.ewo6rku.mongodb.net/calender')
+  mongoose.connect(uri)
   .then(() => console.log('Connected!'));
 })
