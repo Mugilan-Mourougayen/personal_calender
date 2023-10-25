@@ -18,6 +18,9 @@ app.use("/calender", calenderRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-  mongoose.connect(uri)
+  mongoose.connect(uri,  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },)
   .then(() => console.log('Connected!'));
 })

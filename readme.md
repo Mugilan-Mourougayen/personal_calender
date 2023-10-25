@@ -90,3 +90,12 @@ To run this project, you will need to add the following environment variables to
 `MONGO_DB_URL`
 
 `OPENAI_API_KEY`
+
+
+## Run using Docker
+To run using  docker download the file and type the following command from the directory where docker-compose.yml file is present
+
+`docker-compose up`
+
+The will be running in localhost:3000
+
